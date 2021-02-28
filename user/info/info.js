@@ -4,23 +4,25 @@ let layer = layui.layer;
 // 设计：
 //     1.用户名：disabled！不让大家去修改！不是昵称！
 //     2.页面加载，获取曾经注册信息；
-$.ajax({
-  url: "/my/userinfo",
-  success: function (res) {
-    if (res.status == 0) {
-      // 3.数据回填：表单赋值！
-      form.val("info", res.data);
+function get() {
+  $.ajax({
+    url: "/my/userinfo",
+    success: function(res) {
+      if (res.status == 0) {
+        // 3.数据回填：表单赋值！
+        form.val("info", res.data);
 
 
+      }
     }
-  }
-})
-
+  });
+}
+get();
 
 
 
 // *****************************************************提交数据
-$(".layui-form").on("submit", function (e) {
+$(".layui-form").on("submit", function(e) {
   e.preventDefault();
 
 
@@ -37,7 +39,7 @@ $(".layui-form").on("submit", function (e) {
     url: "/my/userinfo",
     type: "POST",
     data: data,
-    success: function (res) {
+    success: function(res) {
       if (res.status == 0) {
         layer.msg(res.message);
 
@@ -60,4 +62,18 @@ $(".layui-form").on("submit", function (e) {
 
 
 
+});
+
+
+
+// ****************************************************重置：回复到填写表一开始；
+// 重置：发现昵称不想用，邮箱换个邮箱！重置：恢复到一开始的样子！页面加载完成时候！
+// 置空：<button type="reset" class="layui-btn layui-btn-primary">重置</button> 
+//      把保存id置空！默认自动置空不能用！
+
+$(".reset").click(function(e) {
+  e.preventDefault();
+
+  // 获取用户数据 ajax重新调用！
+  get();
 });
